@@ -1,8 +1,6 @@
 # expandable_plus
 
-<p align="center">
-  <img src="doc/demo.gif" alt="expandable_plus accordion group demo" width="360">
-</p>
+![expandable_plus banner](https://raw.githubusercontent.com/Yusufihsangorgel/expandable_plus/main/doc/banner.png)
 
 A maintained continuation of the `expandable` package. It shows content that the
 user can expand or collapse, with an optional header, an animated icon, and a
@@ -16,7 +14,7 @@ standalone panel.
 
 ## Migration from expandable
 
-Change the import. Nothing else changes.
+Change the import, and your existing panels behave the same.
 
 ```dart
 // before
@@ -36,6 +34,10 @@ dependencies:
 ```
 
 ## Usage
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Yusufihsangorgel/expandable_plus/main/doc/demo.gif" alt="expandable_plus accordion group demo" width="360">
+</p>
 
 ### A basic panel
 
