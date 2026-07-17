@@ -1,6 +1,8 @@
 # expandable_plus
 
-![expandable_plus banner](doc/banner.png)
+<p align="center">
+  <img src="doc/demo.gif" alt="expandable_plus accordion group demo" width="360">
+</p>
 
 A maintained continuation of the `expandable` package. It shows content that the
 user can expand or collapse, with an optional header, an animated icon, and a
