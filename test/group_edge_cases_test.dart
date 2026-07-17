@@ -14,15 +14,18 @@ void main() {
       expect(g.expandedMember, b);
     });
 
-    test('at-least-one-open: collapsing the only open member re-expands it', () {
-      final g = ExpandableGroupController(allowAllCollapsed: false);
-      final a = ExpandableController(group: g);
-      ExpandableController(group: g);
-      a.expanded = true;
-      a.expanded = false; // must bounce back
-      expect(a.expanded, true, reason: 'last-open should stay open');
-      expect(g.expandedMember, a);
-    });
+    test(
+      'at-least-one-open: collapsing the only open member re-expands it',
+      () {
+        final g = ExpandableGroupController(allowAllCollapsed: false);
+        final a = ExpandableController(group: g);
+        ExpandableController(group: g);
+        a.expanded = true;
+        a.expanded = false; // must bounce back
+        expect(a.expanded, true, reason: 'last-open should stay open');
+        expect(g.expandedMember, a);
+      },
+    );
 
     test('rapid alternating toggles never loop or throw and keep <=1 open', () {
       final g = ExpandableGroupController();
