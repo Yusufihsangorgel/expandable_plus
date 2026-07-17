@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
+  <defs>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="1.5" fill="#E2E8F0" fill-opacity="0.05"/>
+    </pattern>
+  </defs>
+
+  <!-- background -->
+  <rect width="1200" height="400" fill="#0B1220"/>
+  <rect width="1200" height="400" fill="url(#dots)"/>
+
+  <!-- type lockup, lower left -->
+  <rect x="66" y="196" width="44" height="6" fill="#38BDF8"/>
+  <text x="64" y="284" font-family="Menlo, monospace" font-size="58" font-weight="bold" fill="#E2E8F0">expandable_plus</text>
+  <text x="66" y="328" font-family="Menlo, monospace" font-size="23" fill="#94A3B8">Accordion panels for Flutter, one open at a time</text>
+
+  <!-- motif: a stack of panels, the middle one expanded (accordion) -->
+  <g stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <!-- collapsed panel (top) -->
+    <rect x="858" y="120" width="232" height="34" rx="6" fill="none" stroke="#1E3A5F"/>
+    <path d="M 878 137 L 970 137" stroke="#1E3A5F" fill="none"/>
+    <path d="M 1058 131 l 8 8 l 8 -8" stroke="#1E3A5F" fill="none"/>
+    <!-- expanded panel (middle, accent) -->
+    <rect x="858" y="166" width="232" height="80" rx="6" fill="none" stroke="#38BDF8"/>
+    <path d="M 878 185 L 986 185" stroke="#38BDF8" fill="none"/>
+    <path d="M 1058 189 l 8 -8 l 8 8" stroke="#38BDF8" fill="none"/>
+    <path d="M 878 210 L 1050 210 M 878 226 L 1010 226" stroke="#38BDF8" fill="none" stroke-opacity="0.55"/>
+    <!-- collapsed panel (bottom) -->
+    <rect x="858" y="258" width="232" height="34" rx="6" fill="none" stroke="#1E3A5F"/>
+    <path d="M 878 275 L 946 275" stroke="#1E3A5F" fill="none"/>
+    <path d="M 1058 269 l 8 8 l 8 -8" stroke="#1E3A5F" fill="none"/>
+  </g>
+</svg>

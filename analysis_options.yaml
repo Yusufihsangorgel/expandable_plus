@@ -1,0 +1,4 @@
+include: package:flutter_lints/flutter.yaml
+
+# The package is kept clean under `flutter analyze --fatal-infos`. No extra
+# rules are enabled here so the defaults from flutter_lints stay authoritative.

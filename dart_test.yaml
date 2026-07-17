@@ -1,0 +1,6 @@
+tags:
+  golden:
+    # Golden files are rendered on one platform and drift across others
+    # (antialiasing, fonts). Run these only where the goldens were generated:
+    #   flutter test --tags golden
+    # CI excludes them with --exclude-tags golden.
