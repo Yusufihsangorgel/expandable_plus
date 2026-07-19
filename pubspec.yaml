@@ -1,6 +1,9 @@
 name: expandable_plus
-description: A maintained, drop-in successor to expandable with accordion groups, configurable header padding, and a fix for body-tap toggling.
-version: 0.1.0
+description: >-
+  Expandable and collapsible panels with accordion groups for Flutter. A
+  maintained, drop-in successor to the expandable package; adds header padding,
+  fixes body-tap toggling.
+version: 0.1.1
 repository: https://github.com/Yusufihsangorgel/expandable_plus
 issue_tracker: https://github.com/Yusufihsangorgel/expandable_plus/issues
 topics: [expandable, accordion, collapsible, widget, ui]

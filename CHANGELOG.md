@@ -1,3 +1,7 @@
+## 0.1.1
+
+- Docs: sharpen the pub.dev description to lead with the value and the terms people search.
+
 ## 0.1.0
 
 First release, continuing the `expandable` package.
