@@ -28,9 +28,8 @@ and behave the way they did.
 
 ## Install
 
-```yaml
-dependencies:
-  expandable_plus: ^0.1.0
+```sh
+flutter pub add expandable_plus
 ```
 
 ## Usage
