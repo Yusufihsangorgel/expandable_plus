@@ -367,15 +367,24 @@ class ExpandableButton extends StatelessWidget {
     final controller = ExpandableController.of(context, required: true);
     final theme = ExpandableThemeData.withDefaults(this.theme, context);
 
-    if (theme.useInkWell!) {
-      return InkWell(
-        onTap: controller?.toggle,
-        borderRadius: theme.inkWellBorderRadius!,
-        child: child,
-      );
-    } else {
-      return GestureDetector(onTap: controller?.toggle, child: child);
-    }
+    final Widget tappable = theme.useInkWell!
+        ? InkWell(
+            onTap: controller?.toggle,
+            borderRadius: theme.inkWellBorderRadius!,
+            child: child,
+          )
+        : GestureDetector(onTap: controller?.toggle, child: child);
+
+    // A tap target alone tells a screen reader nothing about what it does. The
+    // two facts a user needs here are that this is a button and whether the
+    // panel it controls is currently open, so the announcement changes from
+    // "collapsed" to "expanded" when it is pressed. This widget rebuilds on
+    // controller changes, so the flag stays current.
+    return Semantics(
+      button: true,
+      expanded: controller?.expanded,
+      child: tappable,
+    );
   }
 }
 

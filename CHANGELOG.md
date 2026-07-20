@@ -1,3 +1,14 @@
+## 0.2.0
+
+- The header is now accessible. `ExpandableButton` exposes the button role and
+  the panel's expanded state to the semantics tree, so a screen reader
+  announces "collapsed" or "expanded" and announces the change when the user
+  presses it. Before this the header was a bare tap target: no role, no state,
+  and nothing said when it toggled, which left the widget unusable with
+  assistive technology. Every header and header icon goes through
+  `ExpandableButton`, so panels and accordion groups get it with no changes,
+  and the flag follows the controller when the panel is expanded from code.
+
 ## 0.1.1
 
 - Docs: sharpen the pub.dev description to lead with the value and the terms people search.

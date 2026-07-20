@@ -97,12 +97,33 @@ ExpandablePanel(
 )
 ```
 
+## Accessibility
+
+The header is a real button to a screen reader, and it carries the panel's
+open state, so a user hears "collapsed" or "expanded" and hears it change when
+they press it. That comes from `ExpandableButton`, which every header and
+header icon goes through, so panels and accordion groups get it without any
+setup:
+
+```dart
+ExpandablePanel(
+  header: Text('Details'),   // announced as a button, expanded or collapsed
+  collapsed: Text('Summary'),
+  expanded: Text('Everything'),
+)
+```
+
+Nothing needs to be passed for this, and it tracks the controller, so
+expanding a panel from code updates the announcement too.
+
 ## What's fixed
 
 * Open one panel at a time: [#8](https://github.com/aryzhov/flutter-expandable/issues/8)
 * Remove the padding around the header: [#72](https://github.com/aryzhov/flutter-expandable/issues/72)
 * `tapBodyToExpand` and `tapBodyToCollapse` not working: [#50](https://github.com/aryzhov/flutter-expandable/issues/50)
 * Example not compiling: [#114](https://github.com/aryzhov/flutter-expandable/issues/114)
+* No screen-reader support: the header exposed no button role and no
+  expanded state, so the control was unusable with assistive technology
 
 ## Credits
 
