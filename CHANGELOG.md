@@ -1,3 +1,10 @@
+## 0.2.1
+
+- Declare the demo in `pubspec.yaml` so pub.dev shows it on the package page.
+  The recording was already in the repository and in the README, but pub.dev
+  only renders what the `screenshots:` field points at, so anyone landing on
+  the page from search saw text where the demo should have been.
+
 ## 0.2.0
 
 - The header is now accessible. `ExpandableButton` exposes the button role and
