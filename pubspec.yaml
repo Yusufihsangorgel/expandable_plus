@@ -3,16 +3,15 @@ description: >-
   Expandable and collapsible panels with accordion groups for Flutter. A
   maintained, drop-in successor to the expandable package; adds header padding,
   fixes body-tap toggling.
-version: 0.2.1
+version: 0.2.2
 repository: https://github.com/Yusufihsangorgel/expandable_plus
 issue_tracker: https://github.com/Yusufihsangorgel/expandable_plus/issues
 topics: [expandable, accordion, collapsible, widget, ui]
 
 screenshots:
   - description: >-
-      An accordion group with Shipping, Payment and Returns panels, one open at a
-      time: tapping a header collapses whichever panel was open and expands the
-      one tapped.
+      An accordion group with three panels, one open at a time: tapping a header
+       collapses whichever was open and expands the one tapped.
     path: doc/demo.gif
 
 environment:
