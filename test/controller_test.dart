@@ -103,5 +103,41 @@ void main() {
       expect(found, isNotNull);
       expect(found!.expanded, isTrue);
     });
+
+    testWidgets(
+      'disposes the controller it creates for itself, unregistering it '
+      'from its group',
+      (tester) async {
+        final group = ExpandableGroupController();
+        addTearDown(group.dispose);
+
+        await tester.pumpWidget(
+          ExpandableNotifier(group: group, child: const SizedBox()),
+        );
+        expect(group.members.length, 1);
+
+        // Remove the notifier from the tree; it should dispose the
+        // controller it created for itself and the group should notice.
+        await tester.pumpWidget(const SizedBox());
+        expect(group.members.length, 0);
+      },
+    );
+
+    testWidgets('does not dispose a controller supplied by the caller', (
+      tester,
+    ) async {
+      final controller = ExpandableController();
+      addTearDown(controller.dispose);
+
+      await tester.pumpWidget(
+        ExpandableNotifier(controller: controller, child: const SizedBox()),
+      );
+
+      // Remove the notifier from the tree; a caller-supplied controller
+      // stays owned by the caller, so it must still be usable.
+      await tester.pumpWidget(const SizedBox());
+      controller.expanded = true;
+      expect(controller.expanded, isTrue);
+    });
   });
 }

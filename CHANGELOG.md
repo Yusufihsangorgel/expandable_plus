@@ -1,3 +1,16 @@
+## 0.2.4
+
+- Fix a leak: `ExpandableNotifier` created its own `ExpandableController`
+  whenever no `controller` was passed in, but never disposed it. This is the
+  default path for a bare `ExpandablePanel` and for the accordion pattern
+  (`ExpandableNotifier(group: ...)`). In the accordion case the effect went
+  beyond a passive leak: `ExpandableGroupController` only removes a member
+  from its `dispose()`, so every panel built and then discarded (a list item
+  removed or filtered, a route popped) left a dead controller permanently
+  registered in the group. `ExpandableNotifier` now disposes the controller
+  it created for itself and leaves a caller-supplied controller alone, same
+  as before.
+
 ## 0.2.3
 
 - Install instructions now say `pub add` instead of pinning a version. The

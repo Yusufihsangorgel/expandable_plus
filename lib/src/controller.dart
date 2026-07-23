@@ -112,15 +112,26 @@ class ExpandableNotifier extends StatefulWidget {
 class _ExpandableNotifierState extends State<ExpandableNotifier> {
   ExpandableController? controller;
 
+  /// Whether [controller] was created by this state (as opposed to being
+  /// supplied by [ExpandableNotifier.controller]).
+  ///
+  /// Only a controller this state created is disposed by this state; a
+  /// caller-supplied controller stays owned by its caller.
+  bool _ownsController = false;
+
   @override
   void initState() {
     super.initState();
-    controller =
-        widget.controller ??
-        ExpandableController(
-          initialExpanded: widget.initialExpanded ?? false,
-          group: widget.group,
-        );
+    final provided = widget.controller;
+    if (provided != null) {
+      controller = provided;
+    } else {
+      controller = ExpandableController(
+        initialExpanded: widget.initialExpanded ?? false,
+        group: widget.group,
+      );
+      _ownsController = true;
+    }
   }
 
   @override
@@ -128,10 +139,22 @@ class _ExpandableNotifierState extends State<ExpandableNotifier> {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller &&
         widget.controller != null) {
+      if (_ownsController) {
+        controller?.dispose();
+      }
       setState(() {
         controller = widget.controller;
+        _ownsController = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    if (_ownsController) {
+      controller?.dispose();
+    }
+    super.dispose();
   }
 
   @override
