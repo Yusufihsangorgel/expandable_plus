@@ -2,8 +2,9 @@ import 'package:expandable_plus/expandable_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Widget _host(Widget child) =>
-    MaterialApp(home: Scaffold(body: Center(child: child)));
+Widget _host(Widget child) => MaterialApp(
+  home: Scaffold(body: Center(child: child)),
+);
 
 Widget _panel(ExpandableController controller, {ExpandableThemeData? theme}) =>
     ExpandablePanel(
@@ -28,11 +29,7 @@ void main() {
 
       expect(
         tester.getSemantics(find.byType(ExpandableButton).first),
-        isSemantics(
-          isButton: true,
-          hasExpandedState: true,
-          isExpanded: false,
-        ),
+        isSemantics(isButton: true, hasExpandedState: true, isExpanded: false),
       );
       handle.dispose();
     });
@@ -53,11 +50,7 @@ void main() {
       // screen reader user hears the result of their own tap.
       expect(
         tester.getSemantics(find.byType(ExpandableButton).first),
-        isSemantics(
-          isButton: true,
-          hasExpandedState: true,
-          isExpanded: true,
-        ),
+        isSemantics(isButton: true, hasExpandedState: true, isExpanded: true),
       );
       handle.dispose();
     });
@@ -104,11 +97,7 @@ void main() {
 
       expect(
         tester.getSemantics(find.byType(ExpandableButton).first),
-        isSemantics(
-          isButton: true,
-          hasExpandedState: true,
-          isExpanded: false,
-        ),
+        isSemantics(isButton: true, hasExpandedState: true, isExpanded: false),
       );
       handle.dispose();
     });
