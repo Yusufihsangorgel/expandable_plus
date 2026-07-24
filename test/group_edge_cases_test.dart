@@ -27,6 +27,35 @@ void main() {
       },
     );
 
+    test('at-least-one-open holds from the start, not just after a change', () {
+      // The guarantee used to be maintained but never established: nothing
+      // fires _onMemberChanged when members join collapsed, so a group whose
+      // members all start closed sat at zero expanded forever — the state the
+      // flag exists to forbid.
+      final g = ExpandableGroupController(allowAllCollapsed: false);
+      final a = ExpandableController(group: g);
+      final b = ExpandableController(group: g);
+      expect(a.expanded, true, reason: 'the first member to join opens');
+      expect(b.expanded, false);
+      expect(g.expandedMember, a);
+    });
+
+    test('a member that joins already open is not overridden', () {
+      final g = ExpandableGroupController(allowAllCollapsed: false);
+      final a = ExpandableController(group: g);
+      final b = ExpandableController(group: g, initialExpanded: true);
+      expect(b.expanded, true);
+      expect(a.expanded, false, reason: 'the explicit one wins');
+      expect(g.expandedMember, b);
+    });
+
+    test('allowAllCollapsed:true still starts with everything closed', () {
+      final g = ExpandableGroupController();
+      final cs = List.generate(3, (_) => ExpandableController(group: g));
+      expect(cs.where((c) => c.expanded), isEmpty);
+      expect(g.expandedMember, isNull);
+    });
+
     test('rapid alternating toggles never loop or throw and keep <=1 open', () {
       final g = ExpandableGroupController();
       final cs = List.generate(5, (_) => ExpandableController(group: g));

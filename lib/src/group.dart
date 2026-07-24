@@ -50,6 +50,14 @@ class ExpandableGroupController extends ChangeNotifier {
     controller.addListener(listener);
     if (controller.expanded) {
       _onMemberChanged(controller);
+    } else if (!allowAllCollapsed && expandedMember == null) {
+      // "Always keeps one member expanded" has to be established, not only
+      // maintained. _onMemberChanged only re-expands when a member reports a
+      // change, so a group whose members all join collapsed never fires it and
+      // sits at zero expanded — the state this flag exists to forbid. The
+      // first member to join is the one that opens, which is also what an
+      // accordion with no explicit initialExpanded should look like.
+      controller.expanded = true;
     }
   }
 

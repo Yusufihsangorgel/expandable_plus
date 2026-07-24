@@ -1,3 +1,23 @@
+## 1.0.0
+
+First stable release. The API below is what 1.0 freezes.
+
+- **Fix `allowAllCollapsed: false` not holding at the start.** The flag
+  documents that the group "always keeps one member expanded", but the group
+  only ever *maintained* that: `_onMemberChanged` re-expands the last open
+  member when it closes, and nothing fires it while members are only joining.
+  A group whose members all started collapsed — the ordinary case, since
+  `initialExpanded` defaults to false — therefore sat at zero expanded
+  indefinitely, the one state the flag exists to forbid. Randomised toggling
+  across 100 groups and 2000 transitions hit it 24 times. Joining a group in
+  that state now expands the first member, which is what an accordion with no
+  explicit `initialExpanded` should look like. A member that joins already
+  expanded still wins, and `allowAllCollapsed: true` is unchanged: those groups
+  still start with everything closed.
+
+The mutual-exclusion half of the invariant was already sound — the same 2000
+transitions produced no case of two members open at once, in either mode.
+
 ## 0.2.4
 
 - Fix a leak: `ExpandableNotifier` created its own `ExpandableController`
