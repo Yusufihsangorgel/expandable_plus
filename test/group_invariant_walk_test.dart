@@ -54,8 +54,10 @@ void main() {
       group.dispose();
     }
 
-    printOnFailure('transitions: $checks, born with none open: '
-        '$noneAtBuild/$groups');
+    printOnFailure(
+      'transitions: $checks, born with none open: '
+      '$noneAtBuild/$groups',
+    );
     expect(twoOpen, 0, reason: 'more than one member was expanded');
     expect(noneOpen, 0, reason: 'no member was expanded');
   });
