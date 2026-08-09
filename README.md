@@ -7,8 +7,8 @@ user can expand or collapse, with an optional header, an animated icon, and a
 cross-fade between the collapsed and expanded views.
 
 `expandable` has not had a release since 2021 and has a backlog of open issues.
-`expandable_plus` keeps the same public API, so you can move to it without
-rewriting anything, and it closes some of the most requested gaps. It adds
+`expandable_plus` keeps the same public API. Moving to it costs one import
+line, and it closes some of the most requested gaps. It adds
 accordion groups and a header padding option, and it fixes body taps on a
 standalone panel.
 
@@ -23,7 +23,7 @@ import 'package:expandable/expandable.dart';
 import 'package:expandable_plus/expandable_plus.dart';
 ```
 
-The class names, fields, and defaults are the same, so your existing panels look
+The class names, fields, and defaults are the same. Your existing panels look
 and behave the way they did.
 
 ## Install
@@ -99,9 +99,9 @@ ExpandablePanel(
 ## Accessibility
 
 The header is a real button to a screen reader, and it carries the panel's
-open state, so a user hears "collapsed" or "expanded" and hears it change when
+open state. A user hears "collapsed" or "expanded", and hears it change when
 they press it. That comes from `ExpandableButton`, which every header and
-header icon goes through, so panels and accordion groups get it without any
+header icon goes through. Panels and accordion groups get it without any
 setup:
 
 ```dart
@@ -122,7 +122,7 @@ expanding a panel from code updates the announcement too.
 * `tapBodyToExpand` and `tapBodyToCollapse` not working: [#50](https://github.com/aryzhov/flutter-expandable/issues/50)
 * Example not compiling: [#114](https://github.com/aryzhov/flutter-expandable/issues/114)
 * No screen-reader support: the header exposed no button role and no
-  expanded state, so the control was unusable with assistive technology
+  expanded state, leaving the control unusable with assistive technology
 
 ## Credits
 
