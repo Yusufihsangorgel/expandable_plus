@@ -96,6 +96,34 @@ ExpandablePanel(
 )
 ```
 
+## Long lists: `lazy`
+
+A cross-fade keeps both children in the tree, and a collapsed panel still builds
+its expanded body. One panel never notices. Twenty do: put twenty collapsed
+`ExpandablePanel`s in a `ListView` and fifteen expanded bodies are built on the
+first frame, one for every panel the viewport lays out. Measured in
+`test/lazy_test.dart`, which pins the number.
+
+`lazy: true` holds a panel's body back until it first opens:
+
+```dart
+ExpandablePanel(
+  lazy: true,
+  header: const Text('Section'),
+  collapsed: const Text('Summary'),
+  expanded: const HeavyBody(),
+)
+```
+
+The first expand swaps the real child in, and it stays. Closing and reopening
+costs nothing and keeps whatever state the body was holding, because its
+`initState` runs once.
+
+Off by default. Turning it on moves when a child's `initState` runs. That
+matters if the body has to be alive before anyone opens it, which makes this a
+decision rather than a default. Panels built through `builder` place both
+children themselves and are unaffected.
+
 ## Accessibility
 
 The header is a real button to a screen reader, and it carries the panel's
@@ -112,8 +140,8 @@ ExpandablePanel(
 )
 ```
 
-Nothing needs to be passed for this, and it tracks the controller, so
-expanding a panel from code updates the announcement too.
+Nothing needs to be passed for this. It tracks the controller, and expanding a
+panel from code updates the announcement too.
 
 ## What's fixed
 

@@ -7,7 +7,7 @@ typedef ExpandableBuilder =
 
 /// Shows either [collapsed] or [expanded] depending on the controller state, and
 /// animates between the two.
-class Expandable extends StatelessWidget {
+class Expandable extends StatefulWidget {
   /// The widget shown while collapsed.
   final Widget collapsed;
 
@@ -22,6 +22,26 @@ class Expandable extends StatelessWidget {
   /// The theme used for the transition. Falls back to the ambient theme.
   final ExpandableThemeData? theme;
 
+  /// Whether to hold off building [expanded] until the first time it opens.
+  ///
+  /// The cross-fade this widget animates keeps both children in the tree, so a
+  /// collapsed panel still builds its expanded body on every layout. That is
+  /// invisible for one panel and expensive for a list of them: twenty
+  /// collapsed panels in a `ListView` build fifteen expanded bodies on the
+  /// first frame, one for each panel the viewport lays out.
+  ///
+  /// With this on, a panel that has never been open builds a zero-size
+  /// placeholder instead. The first expand swaps in the real child and it
+  /// stays from then on, so collapsing again keeps its state and costs nothing
+  /// to reopen. A panel that starts expanded builds its child immediately.
+  ///
+  /// Off by default, because turning it on changes when a child's `initState`
+  /// runs. Turn it on for long lists; leave it off when the expanded body has
+  /// to be alive before anyone opens it.
+  ///
+  /// Has no effect when [ExpandablePanel.builder] supplies its own layout.
+  final bool lazy;
+
   /// Creates an [Expandable].
   const Expandable({
     super.key,
@@ -29,18 +49,39 @@ class Expandable extends StatelessWidget {
     required this.expanded,
     this.controller,
     this.theme,
+    this.lazy = false,
   });
+
+  @override
+  State<Expandable> createState() => _ExpandableState();
+}
+
+class _ExpandableState extends State<Expandable> {
+  /// Latches once the panel has been open, and never goes back.
+  bool _everExpanded = false;
 
   @override
   Widget build(BuildContext context) {
     final controller =
-        this.controller ?? ExpandableController.of(context, required: true);
-    final theme = ExpandableThemeData.withDefaults(this.theme, context);
+        widget.controller ?? ExpandableController.of(context, required: true);
+    final theme = ExpandableThemeData.withDefaults(widget.theme, context);
+    final isExpanded = controller?.expanded ?? true;
+
+    // Written during build on purpose. The value is read from the same
+    // controller this build already depends on, it only ever goes false to
+    // true, and it must be true on the frame the cross-fade starts or the
+    // animation would reveal the placeholder. Nothing here needs a second
+    // build, so there is no setState to make.
+    if (isExpanded) _everExpanded = true;
+
+    final second = widget.lazy && !_everExpanded
+        ? const SizedBox.shrink()
+        : widget.expanded;
 
     return AnimatedCrossFade(
       alignment: theme.alignment!,
-      firstChild: collapsed,
-      secondChild: expanded,
+      firstChild: widget.collapsed,
+      secondChild: second,
       firstCurve: Interval(
         theme.collapsedFadeStart,
         theme.collapsedFadeEnd,
@@ -52,7 +93,7 @@ class Expandable extends StatelessWidget {
         curve: theme.fadeCurve!,
       ),
       sizeCurve: theme.sizeCurve!,
-      crossFadeState: (controller?.expanded ?? true)
+      crossFadeState: isExpanded
           ? CrossFadeState.showSecond
           : CrossFadeState.showFirst,
       duration: theme.animationDuration!,
@@ -79,6 +120,12 @@ class ExpandablePanel extends StatelessWidget {
   /// When null, an [Expandable] is used.
   final ExpandableBuilder? builder;
 
+  /// Holds off building [expanded] until the panel first opens.
+  ///
+  /// See [Expandable.lazy] for what this costs and what it buys. Ignored when
+  /// [builder] is given, since the layout is yours at that point.
+  final bool lazy;
+
   /// The controller for this panel.
   ///
   /// When null, a controller is taken from a surrounding [ExpandableNotifier],
@@ -97,6 +144,7 @@ class ExpandablePanel extends StatelessWidget {
     this.controller,
     this.builder,
     this.theme,
+    this.lazy = false,
   });
 
   @override
@@ -196,6 +244,7 @@ class ExpandablePanel extends StatelessWidget {
               collapsed: collapsed,
               expanded: expanded,
               theme: theme,
+              lazy: lazy,
             );
           };
 
