@@ -4,7 +4,9 @@ Panels that expand and collapse, cross-fading between two different views
 rather than clipping one, with accordion groups and a correct screen reader
 announcement.
 
-![expandable_plus banner](https://raw.githubusercontent.com/Yusufihsangorgel/expandable_plus/main/doc/banner.png)
+![An accordion of three panels, Shipping, Payment and Returns. Opening one
+closes the last, the chevron turns as it goes, and the collapsed and expanded
+states show different content rather than the same content clipped](https://raw.githubusercontent.com/Yusufihsangorgel/expandable_plus/main/doc/demo.gif)
 
 ## Why this instead of what you already have
 
@@ -64,10 +66,6 @@ flutter pub add expandable_plus
 ```
 
 ## Usage
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Yusufihsangorgel/expandable_plus/main/doc/demo.gif" alt="expandable_plus accordion group demo" width="360">
-</p>
 
 ### A basic panel
 
