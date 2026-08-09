@@ -59,6 +59,8 @@ class _HomePageState extends State<HomePage> {
             _AccordionCard(group: _group),
             _title(context, 'Header padding'),
             const _HeaderPaddingCard(),
+            _title(context, 'Lazy bodies in a long list'),
+            const _LazyCard(),
           ],
         ),
       ),
@@ -168,6 +170,94 @@ class _HeaderPaddingCard extends StatelessWidget {
           child: Text(_sampleText),
         ),
       ),
+    );
+  }
+}
+
+/// Twenty panels whose bodies count their own builds.
+///
+/// A cross-fade keeps both children in the tree, and without `lazy` every panel
+/// the viewport lays out builds its expanded body on the first frame. The
+/// counter stays at zero until you open one.
+class _LazyCard extends StatefulWidget {
+  const _LazyCard();
+
+  @override
+  State<_LazyCard> createState() => _LazyCardState();
+}
+
+class _LazyCardState extends State<_LazyCard> {
+  bool _lazy = true;
+  int _builds = 0;
+  // Flipping the mode rebuilds the panels, and this key is what makes the
+  // count start over rather than carrying the previous mode's total.
+  int _generation = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Switch(
+                  value: _lazy,
+                  onChanged: (v) => setState(() {
+                    _lazy = v;
+                    _builds = 0;
+                    _generation++;
+                  }),
+                ),
+                const SizedBox(width: 8),
+                Expanded(child: Text('lazy: $_lazy')),
+                Text(
+                  'bodies built: $_builds',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 260,
+              child: ListView.builder(
+                key: ValueKey(_generation),
+                itemCount: 20,
+                itemBuilder: (context, i) => ExpandablePanel(
+                  lazy: _lazy,
+                  header: Text('Section $i'),
+                  collapsed: const SizedBox(height: 8),
+                  expanded: _CountedBody(onBuild: _count),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _count() {
+    // Called from a child's build, so the rebuild waits for the frame to end.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() => _builds++);
+    });
+  }
+}
+
+class _CountedBody extends StatelessWidget {
+  const _CountedBody({required this.onBuild});
+
+  final VoidCallback onBuild;
+
+  @override
+  Widget build(BuildContext context) {
+    onBuild();
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Text('This body was built.'),
     );
   }
 }

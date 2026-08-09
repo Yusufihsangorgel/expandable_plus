@@ -1,3 +1,10 @@
+## 1.1.1
+
+- The example demonstrates `lazy`. Twenty panels in a list, a switch for the
+  mode, and a counter for how many expanded bodies have been built. It reads
+  zero until you open one, and jumps to fifteen the moment the switch goes off.
+  The feature shipped in 1.1.0 with nothing to look at.
+
 ## 1.1.0
 
 - Add `lazy` to `ExpandablePanel` and `Expandable`. A cross-fade keeps both
