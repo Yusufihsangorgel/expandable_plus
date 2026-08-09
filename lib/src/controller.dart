@@ -46,8 +46,14 @@ class ExpandableController extends ValueNotifier<bool> {
   /// ancestor, or `null` when there is none.
   ///
   /// When [rebuildOnChange] is true (the default), the calling widget rebuilds
-  /// when the controller changes. Set [required] to true to assert that a
-  /// controller is present.
+  /// when the controller changes.
+  ///
+  /// Passing [required] means the caller cannot work without a controller, and
+  /// a missing one throws. It used to only assert, which is compiled out of a
+  /// release build, so the same misplaced widget threw during development and
+  /// then quietly did nothing in the shipped app: an [ExpandableButton] with a
+  /// null `onTap` looks like a button and ignores taps. A promise that only
+  /// holds in debug is the worst kind, so it now holds in both.
   static ExpandableController? of(
     BuildContext context, {
     bool rebuildOnChange = true,
@@ -60,10 +66,20 @@ class ExpandableController extends ValueNotifier<bool> {
               >()
         : context
               .findAncestorWidgetOfExactType<_ExpandableControllerNotifier>();
-    assert(
-      notifier != null || !required,
-      'ExpandableNotifier is not found in the widget tree',
-    );
+    if (notifier == null && required) {
+      throw FlutterError.fromParts([
+        ErrorSummary('No ExpandableNotifier found above this widget.'),
+        ErrorDescription(
+          '${context.widget.runtimeType} needs an ExpandableController, and '
+          'reads it from the nearest ExpandableNotifier ancestor.',
+        ),
+        ErrorHint(
+          'Wrap the subtree in an ExpandableNotifier, or pass a controller '
+          'directly where the widget accepts one.',
+        ),
+        context.describeElement('The widget that asked for it was'),
+      ]);
+    }
     return notifier?.notifier;
   }
 }

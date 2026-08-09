@@ -1,16 +1,47 @@
 # expandable_plus
 
+Panels that expand and collapse, cross-fading between two different views
+rather than clipping one, with accordion groups and a correct screen reader
+announcement.
+
 ![expandable_plus banner](https://raw.githubusercontent.com/Yusufihsangorgel/expandable_plus/main/doc/banner.png)
 
-A maintained continuation of the `expandable` package. It shows content that the
-user can expand or collapse, with an optional header, an animated icon, and a
-cross-fade between the collapsed and expanded views.
+## Why this instead of what you already have
 
-`expandable` has not had a release since 2021 and has a backlog of open issues.
-`expandable_plus` keeps the same public API. Moving to it costs one import
-line, and it closes some of the most requested gaps. It adds
-accordion groups and a header padding option, and it fixes body taps on a
-standalone panel.
+**Instead of `ExpansionTile`.** Its constructor takes no collapsed-content
+parameter (`material/expansion_tile.dart:121`). Every `collapsed*` field it
+does accept is a style: `collapsedBackgroundColor`, `collapsedTextColor`,
+`collapsedIconColor`, `collapsedShape`. It reveals a single body by animating a
+height factor, so there is no cross-fade between two different views, and
+nothing coordinates one tile with the next.
+
+**Instead of [expandable].** `Semantics` appears nowhere in its source, so
+`ExpandableButton` (`lib/expandable.dart:751`) hands a screen reader a bare
+`InkWell` with no button role and no expanded state. Four of its open issues
+are the ones people hit first: [#8] asks for one panel open at a time (April
+2019), [#50] reports `tapBodyToExpand` not working (March 2020), [#72] asks how
+to remove the header padding (September 2020), and [#114] reports the example
+does not compile (October 2021, filed after the package's last release). The
+public API here is the same one, so the move costs an import line.
+
+[expandable]: https://pub.dev/packages/expandable
+[#8]: https://github.com/aryzhov/flutter-expandable/issues/8
+[#50]: https://github.com/aryzhov/flutter-expandable/issues/50
+[#72]: https://github.com/aryzhov/flutter-expandable/issues/72
+[#114]: https://github.com/aryzhov/flutter-expandable/issues/114
+
+## Reach for it when
+
+- The collapsed and expanded states show different content, not the same
+  content clipped.
+- A set of panels should behave as an accordion with one open at a time.
+- Panels need a correct button role and expanded state announced to a screen
+  reader.
+
+Skip it if a Material `ExpansionTile` already fits your design. It ships with
+the framework, it announces its own state changes through a live region
+(`material/expansion_tile.dart:634`), and one fewer dependency is worth more
+than the extras here.
 
 ## Migration from expandable
 

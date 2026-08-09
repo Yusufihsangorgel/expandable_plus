@@ -1,3 +1,16 @@
+## 1.2.0
+
+- `ExpandableController.of(required: true)` now throws when there is no
+  `ExpandableNotifier` above it, in every build mode. It used to only assert,
+  and asserts are compiled out of a release build, so a misplaced widget threw
+  during development and then quietly did nothing in the shipped app: an
+  `ExpandableButton` with a null `onTap` still looks like a button and ignores
+  every tap, and a panel with no controller renders permanently open. The error
+  names the widget that asked and says what to wrap it in.
+- The README opens with what the package is for and answers `ExpansionTile` and
+  `expandable` in its first screen, with the source lines and issue numbers
+  behind each claim.
+
 ## 1.1.1
 
 - The example demonstrates `lazy`. Twenty panels in a list, a switch for the

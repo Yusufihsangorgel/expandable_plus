@@ -140,4 +140,69 @@ void main() {
       expect(controller.expanded, isTrue);
     });
   });
+
+  group('a missing notifier is reported, not swallowed', () {
+    // `required: true` used to feed an assert, and asserts are compiled out of
+    // a release build. The same misplaced widget threw during development and
+    // then quietly did nothing in the shipped app: a button with a null onTap
+    // still looks like a button. These check the reporting path itself rather
+    // than the assert, so they would fail the same way in either mode.
+
+    testWidgets('of(required: true) throws when there is no notifier', (
+      tester,
+    ) async {
+      late BuildContext captured;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              captured = context;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      expect(
+        () => ExpandableController.of(captured, required: true),
+        throwsA(
+          isA<FlutterError>().having(
+            (e) => e.message,
+            'message',
+            contains('No ExpandableNotifier found'),
+          ),
+        ),
+      );
+    });
+
+    testWidgets('without required it still returns null', (tester) async {
+      late BuildContext captured;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              captured = context;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      expect(ExpandableController.of(captured), isNull);
+    });
+
+    testWidgets('an ExpandableButton with no notifier reports it', (
+      tester,
+    ) async {
+      // The widget that used to go inert. Building it outside a notifier now
+      // surfaces the mistake instead of shipping a dead tap target.
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(body: ExpandableButton(child: Text('open'))),
+        ),
+      );
+
+      expect(tester.takeException(), isA<FlutterError>());
+    });
+  });
 }
