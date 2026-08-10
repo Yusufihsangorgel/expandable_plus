@@ -143,7 +143,14 @@ A cross-fade keeps both children in the tree, and a collapsed panel still builds
 its expanded body. One panel never notices. Twenty do: put twenty collapsed
 `ExpandablePanel`s in a `ListView` and fifteen expanded bodies are built on the
 first frame, one for every panel the viewport lays out. Measured in
-`test/lazy_test.dart`, which pins the number.
+`test/lazy_test.dart`, which pins the number. Redraw the figure with
+`dart run tool/lazy_cost_figure.dart`.
+
+![Two lists of twenty collapsed panels side by side. In the left one, headed
+"lazy: false", every laid-out row has a dashed red body behind it reading
+"expanded body, built, never shown", and the count underneath is 15. In the
+right one, headed "lazy: true", the rows are bare and the count is
+0.](https://raw.githubusercontent.com/Yusufihsangorgel/expandable_plus/main/doc/lazy-cost.png)
 
 `lazy: true` holds a panel's body back until it first opens:
 

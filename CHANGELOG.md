@@ -1,3 +1,11 @@
+## 1.2.4
+
+- The `lazy` section now has a figure. It was the package's strongest argument
+  and it was prose with a number in it: twenty collapsed panels in a
+  `ListView` build fifteen expanded bodies on the first frame, and `lazy: true`
+  builds none. Those are `test/lazy_test.dart`'s own assertions, drawn rather
+  than described.
+
 ## 1.2.3
 
 - The README sample now says which class in it is yours to write. It read like
