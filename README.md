@@ -17,6 +17,18 @@ does accept is a style: `collapsedBackgroundColor`, `collapsedTextColor`,
 height factor, so there is no cross-fade between two different views, and
 nothing coordinates one tile with the next.
 
+![Two rows of three frames. The top row reveals one body by growing its height,
+so the shut frame shows nothing. The bottom row fades a summary line out while a
+form fades in, and the shut frame still says
+something.](https://raw.githubusercontent.com/Yusufihsangorgel/expandable_plus/main/doc/reveal-modes.png)
+
+That difference decides what a shut panel can say. Growing a height means the
+collapsed state is the expanded one with most of it hidden, so a shut row
+either shows the top of the form or shows nothing. Two views means a shut
+Shipping row can read "Standard, arrives Thursday" and an open one can be the
+address form. Redraw the figure with
+`dart run tool/reveal_modes_figure.dart`.
+
 **Instead of [expandable].** `Semantics` appears nowhere in its source, so
 `ExpandableButton` (`lib/expandable.dart:751`) hands a screen reader a bare
 `InkWell` with no button role and no expanded state. Four of its open issues

@@ -1,3 +1,9 @@
+## 1.2.2
+
+- A figure for the claim the package opens on. "Cross-fades between two
+  different views rather than clipping one" is a sentence doing a lot of work;
+  six frames show it instead. Drawn by `tool/reveal_modes_figure.dart`.
+
 ## 1.2.1
 
 - The README leads with the recording of the package working. The file was
