@@ -1,3 +1,9 @@
+## 1.2.3
+
+- The README sample now says which class in it is yours to write. It read like
+  the package supplied one, so copying it left a reader guessing at what was
+  missing.
+
 ## 1.2.2
 
 - A figure for the claim the package opens on. "Cross-fades between two

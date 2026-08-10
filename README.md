@@ -152,6 +152,8 @@ ExpandablePanel(
   lazy: true,
   header: const Text('Section'),
   collapsed: const Text('Summary'),
+  // Your widget. `lazy` is what keeps it unbuilt until the panel opens,
+  // which is the whole reason to reach for it.
   expanded: const HeavyBody(),
 )
 ```
