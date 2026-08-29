@@ -176,22 +176,55 @@ children themselves and are unaffected.
 
 ## Accessibility
 
-The header is a real button to a screen reader, and it carries the panel's
-open state. A user hears "collapsed" or "expanded", and hears it change when
-they press it. That comes from `ExpandableButton`, which every header and
-header icon goes through. Panels and accordion groups get it without any
-setup:
+`ExpandableButton` wraps the header in `Semantics(button: true, expanded: ...)`.
+There is no label or semantics parameter to pass. The header widget is the
+name: a `Text('Shipping')` header is announced as Shipping.
 
-```dart
-ExpandablePanel(
-  header: Text('Details'),   // announced as a button, expanded or collapsed
-  collapsed: Text('Summary'),
-  expanded: Text('Everything'),
-)
+`example/test/screen_reader_transcript_test.dart` drives the example accordion
+and asserts those flags after every tap, then writes them in this spoken form.
+It is the node's label, the button role, and the expanded flag — not a
+recording of VoiceOver. First frame, Shipping already open:
+
+```
+Shipping, button, expanded
+Payment, button, collapsed
+Returns, button, collapsed
 ```
 
-Nothing needs to be passed for this. It tracks the controller, and expanding a
-panel from code updates the announcement too.
+Tap Payment. The group closes Shipping; nobody tapped it:
+
+```
+Shipping, button, collapsed
+Payment, button, expanded
+Returns, button, collapsed
+```
+
+Tap Payment again:
+
+```
+Shipping, button, collapsed
+Payment, button, collapsed
+Returns, button, collapsed
+```
+
+The same three titles built as a bare `InkWell`, which is what `expandable`
+hands a screen reader (`Semantics` appears nowhere in its source):
+
+```
+Shipping  tappable, no button role, no open state
+Payment   tappable, no button role, no open state
+Returns   tappable, no button role, no open state
+```
+
+`ExpandablePanel` does this for you. A custom layout still has to wrap the
+subtree in `ExpandableNotifier` and put the header in `ExpandableButton`;
+otherwise the node is missing. Leave `tapHeaderToExpand` at its default
+(`true`) so the header text sits inside the button. Turn it off and only the
+chevron is the button, and it has no name.
+
+The flag follows the controller, so expanding from code updates the
+announcement too. The change is the flag on the button, not a live region: a
+screen reader focused on the header hears the new state.
 
 ## What's fixed
 

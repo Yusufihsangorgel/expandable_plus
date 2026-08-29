@@ -1,3 +1,12 @@
+## 1.2.5
+
+- The README now shows the screen-reader transcript. The package's real
+  difference from `expandable` is that the header announces a button role and
+  an expanded state, and that evidence lived in
+  `example/test/screen_reader_transcript_test.dart` where a team deciding from
+  the README would never see it. The lines in the new section are that test's
+  own assertions.
+
 ## 1.2.4
 
 - The `lazy` section now has a figure. It was the package's strongest argument
