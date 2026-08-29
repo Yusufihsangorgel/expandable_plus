@@ -24,7 +24,8 @@ const cost = '#e0796f'; // a body that was built and nobody asked for
 const saved = '#7fb3ff';
 
 const panelW = 290.0;
-const rows = 8; // what fits in the drawn viewport; the count is stated, not drawn
+const rows =
+    8; // what fits in the drawn viewport; the count is stated, not drawn
 const rowH = 36.0;
 const bodyH = 16.0;
 
@@ -139,5 +140,7 @@ void main() {
   File('doc/lazy-cost.svg').writeAsStringSync(svg.toString());
   stdout
     ..writeln('wrote doc/lazy-cost.svg')
-    ..writeln('render: rsvg-convert -z 2 doc/lazy-cost.svg -o doc/lazy-cost.png');
+    ..writeln(
+      'render: rsvg-convert -z 2 doc/lazy-cost.svg -o doc/lazy-cost.png',
+    );
 }

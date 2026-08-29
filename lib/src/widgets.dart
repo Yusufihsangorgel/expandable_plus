@@ -2,8 +2,11 @@ part of '../expandable_plus.dart';
 
 /// Builds the widget shown by [ExpandablePanel] from its collapsed and expanded
 /// children.
-typedef ExpandableBuilder =
-    Widget Function(BuildContext context, Widget collapsed, Widget expanded);
+typedef ExpandableBuilder = Widget Function(
+  BuildContext context,
+  Widget collapsed,
+  Widget expanded,
+);
 
 /// Shows either [collapsed] or [expanded] depending on the controller state, and
 /// animates between the two.
