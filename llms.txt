@@ -1,0 +1,16 @@
+# expandable_plus
+
+Expandable and collapsible panels with accordion groups for Flutter. A maintained, drop-in successor to the expandable package; adds header padding, fixes body-tap toggling.
+
+pub.dev: https://pub.dev/packages/expandable_plus
+source: https://github.com/Yusufihsangorgel/expandable_plus
+
+## Before you call it
+
+README.md carries the usage, the measured comparison against the alternatives, and a note on when not to reach for this package.
+
+## Layout
+
+- `lib/` — public API
+- `example/` — runnable examples
+- `test/` — the suite; `dart test` (or `flutter test`) runs it
