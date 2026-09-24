@@ -60,7 +60,8 @@ than the extras here.
 ## Migration from expandable
 
 Change the import. Every class, constructor parameter and default value of
-expandable 5.0.1 is still here, and everything this package adds is optional.
+expandable 5.0.1 is still here, and every parameter this package adds is
+optional.
 
 ```dart
 // before
@@ -71,25 +72,28 @@ import 'package:expandable_plus/expandable_plus.dart';
 
 These differ from expandable 5.0.1:
 
-* Body taps open and close a standalone panel when `tapBodyToExpand` or
-  `tapBodyToCollapse` is set. In expandable they did nothing ([#50]).
+* Tapping the body of a standalone panel opens it when `tapBodyToExpand` is
+  set and closes it when `tapBodyToCollapse` is set. In expandable those taps
+  did nothing ([#50]).
 * `ScrollOnExpand(scrollOnExpand: false)` no longer scrolls its child into
   view when the panel opens. In expandable an operator-precedence slip ignored
   the flag on expand.
 * `ExpandableButton` tells a screen reader that it is a button and whether the
   panel is open.
-* `ExpandableController.of(context, required: true)` throws when no
-  `ExpandableNotifier` is above it, in release builds too. In expandable it
-  asserted in debug builds and returned null in release builds.
+* `ExpandableController.of(context, required: true)` throws a `FlutterError`
+  when no `ExpandableNotifier` is above it, in release builds too. In
+  expandable it asserted in debug builds and returned null in release builds.
 * `ExpandableNotifier` disposes the controller it created for itself once it
   is removed or handed a controller. In expandable that controller was never
   disposed.
-* A theme that sets only `iconSize` or `iconPadding` is no longer discarded
-  when themes are merged.
+* `ExpandableThemeData` equality counts `iconSize` and `iconPadding`. A theme
+  that sets only those is no longer discarded when themes are merged, and
+  changing them in an enclosing `ExpandableTheme` now updates the panels below.
 * `Expandable` is a `StatefulWidget` now. A subclass that overrides `build`
   has to move that code into a `State`.
 
-The package needs Dart 3.9 or later.
+The package declares `sdk: ^3.9.0`: it needs a Flutter release that ships
+Dart 3.9 or a later Dart 3.
 
 ## Install
 

@@ -2,10 +2,10 @@
 
 - The migration section said existing panels behave the same after the import
   change. Several changes in this package make some panels act differently, and
-  the section now lists each of them, along with the Dart 3.9 floor. Two of the
-  fixes were not recorded anywhere before: `ScrollOnExpand` respects
-  `scrollOnExpand: false` when a panel opens, and a theme that sets only
-  `iconSize` or `iconPadding` is no longer discarded when themes are merged.
+  the section now lists them, along with the Dart 3.9 floor. Two of the fixes
+  had no changelog entry until now: `ScrollOnExpand` respects
+  `scrollOnExpand: false` when a panel opens, and theme equality counts
+  `iconSize` and `iconPadding`.
 
 ## 1.2.5
 
