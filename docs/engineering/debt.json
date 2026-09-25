@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "package": "expandable_plus",
+  "survey_digest": "f90f45c8a172068c3ed3b9488ba5a7cb4e58efa93c380d2d9a70b399349ec35e",
+  "items": [
+    {
+      "id": "expandable_plus-D001",
+      "source_index": 1,
+      "source_item_digest": "a40663b7d0b49f98a7388f5c92b01bb301e59bd7a472863c4e2d4b3b5e3de539",
+      "baseline_revision": "182e623",
+      "status": "open",
+      "size": "small",
+      "locations": [
+        {
+          "path": "lib/src/theme.dart",
+          "lines": "45-94,192-234,265-288,290-344"
+        },
+        {
+          "path": "test/theme_test.dart",
+          "lines": "73-98"
+        }
+      ],
+      "kind": "no J1 guard (field list copy)",
+      "observation": "The 22-field list is hand repeated in six places. The tests probe only headerPadding and a single differing field. If a new field is forgotten in one of combine, isFull, == or hashCode, CI still passes.",
+      "certainty": "confirmed",
+      "proposed_fix": "Write a table-driven test: for each field produce a theme with only that field set; verify that combine inherits that field, that isFull returns false when the field is missing, that inequality differs and that the hash differs. Tie the field count to a constant.",
+      "related_rule_ids": [
+        "expandable_plus/EP-04"
+      ],
+      "issue_url": null,
+      "closure_criteria": "A table-driven test sets each theme field alone and checks combine inheritance, isFull, inequality and hash difference. The test ties the field count to a constant.",
+      "review_trigger": "Before modifying the affected code",
+      "resolution": null
+    },
+    {
+      "id": "expandable_plus-D002",
+      "source_index": 2,
+      "source_item_digest": "5cb86326f91c04a949572d48629bfdfcba7c3641b433b0f1d6aca7d8588fea73",
+      "baseline_revision": "182e623",
+      "status": "open",
+      "size": "small",
+      "locations": [
+        {
+          "path": "lib/src/controller.dart",
+          "lines": "153-166"
+        }
+      ],
+      "kind": "lifecycle bug (potential, static reading)",
+      "observation": "didUpdateWidget handles only a new, non-null controller. If the supplied controller returns to null, the state keeps the controller of the caller (possibly disposed). Changes to initialExpanded and group are ignored. The setState inside didUpdateWidget is unnecessary.",
+      "certainty": "probable",
+      "proposed_fix": "Apply the ownership pattern from photo_zoom: when the controller returns to null, create a newly adopted controller. Test: exercise the supplied → not supplied transition and the behavior after the old controller is disposed.",
+      "related_rule_ids": [
+        "expandable_plus/EP-06"
+      ],
+      "issue_url": null,
+      "closure_criteria": "didUpdateWidget adopts a newly created controller when the supplied controller returns to null and reacts to changes in initialExpanded and group. A test drives the supplied-to-null transition and the state after the old controller is disposed.",
+      "review_trigger": "Before modifying the affected code",
+      "resolution": null
+    },
+    {
+      "id": "expandable_plus-D003",
+      "source_index": 3,
+      "source_item_digest": "52dbb0cfc75d3a6e7fa93a6b748fa6df068c1cb1c5508c34714c0e3544aa654c",
+      "baseline_revision": "182e623",
+      "status": "open",
+      "size": "medium",
+      "locations": [
+        {
+          "path": "lib/src/widgets.dart",
+          "lines": "523-536"
+        },
+        {
+          "path": "test/scroll_on_expand_test.dart",
+          "lines": "7-47"
+        }
+      ],
+      "kind": "undocumented workaround (J12) + untested behavior",
+      "observation": "ScrollOnExpand guesses the moment the expansion animation ends with a Future.delayed that waits scrollAnimationDuration + 10 ms. It should wait animationDuration instead; the 10 ms is a bare literal and the race it prevents is not written down. The test only checks that no exception is thrown, not that scrolling actually happens.",
+      "certainty": "probable",
+      "proposed_fix": "First write a red test that verifies the scroll offset. Then derive the wait from animationDuration or tie it to the animation completing. If the delay stays, write a comment about which race it prevents.",
+      "related_rule_ids": [],
+      "issue_url": null,
+      "closure_criteria": "ScrollOnExpand waits for animationDuration or ties the wait to the animation completing, and any remaining delay documents the race it prevents. A red test first verifies the actual scroll offset.",
+      "review_trigger": "Before modifying the affected code",
+      "resolution": null
+    },
+    {
+      "id": "expandable_plus-D004",
+      "source_index": 4,
+      "source_item_digest": "1be598fc0e2289acafd17869552d3ea2515642e57a57455623f62e319ed407a4",
+      "baseline_revision": "182e623",
+      "status": "open",
+      "size": "small",
+      "locations": [
+        {
+          "path": "lib/src/widgets.dart",
+          "lines": "475,512-517,540"
+        }
+      ],
+      "kind": "unnecessary state",
+      "observation": "The _lastContext field duplicates the context of the State itself.",
+      "certainty": "confirmed",
+      "proposed_fix": "Remove the field; use context directly behind a mounted check.",
+      "related_rule_ids": [],
+      "issue_url": null,
+      "closure_criteria": "The _lastContext field is removed and the code reads context behind a mounted check.",
+      "review_trigger": "Before modifying the affected code",
+      "resolution": null
+    },
+    {
+      "id": "expandable_plus-D005",
+      "source_index": 5,
+      "source_item_digest": "d5aef1093fb7fceca5062d85bb512c537d47e8dfbc49f679c2b3ecfacfc29220",
+      "baseline_revision": "182e623",
+      "status": "open",
+      "size": "small",
+      "locations": [
+        {
+          "path": "lib/src/widgets.dart",
+          "lines": "523-526"
+        }
+      ],
+      "kind": "wrong fallback field",
+      "observation": "When there is no theme the scroll duration reads defaults.animationDuration; the correct field is scrollAnimationDuration.",
+      "certainty": "confirmed",
+      "proposed_fix": "Switch to defaults.scrollAnimationDuration. The two defaults are equal and behavior does not change.",
+      "related_rule_ids": [
+        "expandable_plus/EP-04"
+      ],
+      "issue_url": null,
+      "closure_criteria": "The no-theme fallback reads defaults.scrollAnimationDuration.",
+      "review_trigger": "Before modifying the affected code",
+      "resolution": null
+    },
+    {
+      "id": "expandable_plus-D006",
+      "source_index": 6,
+      "source_item_digest": "60585d1d6fa6e764eecd79f0d4b167dc138ae73bd8aa949b0b947355b18ebb31",
+      "baseline_revision": "182e623",
+      "status": "open",
+      "size": "small",
+      "locations": [
+        {
+          "path": "lib/src/widgets.dart",
+          "lines": "299-326,355-371"
+        }
+      ],
+      "kind": "duplicate logic",
+      "observation": "ExpandableIcon does the controller lookup and listener binding in both initState and didChangeDependencies. didChangeDependencies already runs after every initState.",
+      "certainty": "confirmed",
+      "proposed_fix": "Keep the controller binding work in didChangeDependencies only.",
+      "related_rule_ids": [],
+      "issue_url": null,
+      "closure_criteria": "ExpandableIcon binds the controller and its listener in didChangeDependencies only, with no duplicate binding in initState.",
+      "review_trigger": "Before modifying the affected code",
+      "resolution": null
+    },
+    {
+      "id": "expandable_plus-D007",
+      "source_index": 7,
+      "source_item_digest": "b81a3b6b19adbe3ac0c1ee4e7cc238b123d6c15181ed6e870d419ee2d44b05b9",
+      "baseline_revision": "182e623",
+      "status": "open",
+      "size": "medium",
+      "locations": [
+        {
+          "path": "lib/src/widgets.dart",
+          "lines": "150-277"
+        }
+      ],
+      "kind": "cognitive complexity (J2)",
+      "observation": "ExpandablePanel.build spans 127 lines and contains three levels of nested local functions.",
+      "certainty": "confirmed",
+      "proposed_fix": "Extract the header row and the body into private widgets (_PanelHeader, _PanelBody). panel_test acts as the safety net.",
+      "related_rule_ids": [],
+      "issue_url": null,
+      "closure_criteria": "ExpandablePanel.build delegates the header row and the body to private _PanelHeader and _PanelBody widgets. panel_test passes.",
+      "review_trigger": "Before modifying the affected code",
+      "resolution": null
+    },
+    {
+      "id": "expandable_plus-D008",
+      "source_index": 8,
+      "source_item_digest": "258bff2c1214e0b59b8b521d0424b2b57df570dd173c457d924bbad220f7991f",
+      "baseline_revision": "182e623",
+      "status": "open",
+      "size": "small",
+      "locations": [
+        {
+          "path": "lib/src/theme.dart",
+          "lines": "236-249"
+        }
+      ],
+      "kind": "duplicate formula",
+      "observation": "collapsedFadeStart/End and expandedFadeStart/End use the same formula in pairs.",
+      "certainty": "confirmed",
+      "proposed_fix": "Keep the public API unchanged; let one pair reference the other or write a one-line note on why they are the same.",
+      "related_rule_ids": [],
+      "issue_url": null,
+      "closure_criteria": "The collapsed and expanded fade pairs share one formula or carry a one-line note on the sameness, with the public API unchanged.",
+      "review_trigger": "Before modifying the affected code",
+      "resolution": null
+    },
+    {
+      "id": "expandable_plus-D009",
+      "source_index": 9,
+      "source_item_digest": "8dbfb5de3935a8f5f8ddc0517aefeb9cc8af59b059a79a9bf6638c5210c3df24",
+      "baseline_revision": "182e623",
+      "status": "open",
+      "size": "small",
+      "locations": [
+        {
+          "path": "pubspec.yaml",
+          "lines": null
+        },
+        {
+          "path": "example/pubspec.yaml",
+          "lines": null
+        }
+      ],
+      "kind": "configuration drift",
+      "observation": "sdk ^3.9.0 and the flutter '>=3.10.0' base do not match. The example uses flutter_lints ^5.0.0, the root uses ^6.0.0.",
+      "certainty": "confirmed",
+      "proposed_fix": "Move the flutter base to a version compatible with sdk ^3.9.0; align the example lint version with the root.",
+      "related_rule_ids": [],
+      "issue_url": null,
+      "closure_criteria": "pubspec.yaml declares a flutter base compatible with sdk ^3.9.0 and the example uses the same lint version as the root.",
+      "review_trigger": "Before modifying the affected code",
+      "resolution": null
+    },
+    {
+      "id": "expandable_plus-D010",
+      "source_index": 10,
+      "source_item_digest": "bfa3fdd5df50817daf498c1b4d8db19d33939d900a7f002cac6d1b57b5b425a1",
+      "baseline_revision": "182e623",
+      "status": "open",
+      "size": "small",
+      "locations": [
+        {
+          "path": ".github/workflows/ci.yaml",
+          "lines": null
+        },
+        {
+          "path": "AGENTS.md",
+          "lines": null
+        }
+      ],
+      "kind": "CI coverage gap",
+      "observation": "example/test/screen_reader_transcript_test.dart (4 cases) does not run in CI and example is not analyzed, while AGENTS.md says 'cd example && flutter test'.",
+      "certainty": "confirmed",
+      "proposed_fix": "Add pub get, analyze and test steps for example as in photo_zoom.",
+      "related_rule_ids": [],
+      "issue_url": null,
+      "closure_criteria": "CI runs pub get, analyze and test for example, covering the four cases of screen_reader_transcript_test.dart.",
+      "review_trigger": "Before modifying the affected code",
+      "resolution": null
+    }
+  ]
+}
