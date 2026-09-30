@@ -157,8 +157,7 @@ void main() {
           body: Column(
             children: [
               for (final title in _headers)
-                // `Semantics` appears nowhere in expandable's source, so its
-                // ExpandableButton (lib/expandable.dart:751) hands a screen
+                // A bare InkWell with no `Semantics` around it hands a screen
                 // reader exactly this: a tap target with a label on it.
                 InkWell(
                   onTap: () {},

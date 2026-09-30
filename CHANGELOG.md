@@ -1,3 +1,11 @@
+## 1.2.6
+
+- The accordion sample in the README keeps one controller per panel in `State`
+  and disposes each of them before the group. Copying it no longer leaves stale
+  members in the group after a rebuild.
+- The README no longer makes claims about the source and open issues of
+  `expandable`. It says what this package provides.
+
 ## 1.2.5
 
 - The README now shows the screen-reader transcript. The package's real

@@ -29,20 +29,10 @@ Shipping row can read "Standard, arrives Thursday" and an open one can be the
 address form. Redraw the figure with
 `dart run tool/reveal_modes_figure.dart`.
 
-**Instead of [expandable].** `Semantics` appears nowhere in its source, so
-`ExpandableButton` (`lib/expandable.dart:751`) hands a screen reader a bare
-`InkWell` with no button role and no expanded state. Four of its open issues
-are the ones people hit first: [#8] asks for one panel open at a time (April
-2019), [#50] reports `tapBodyToExpand` not working (March 2020), [#72] asks how
-to remove the header padding (September 2020), and [#114] reports the example
-does not compile (October 2021, filed after the package's last release). The
-public API here is the same one, so the move costs an import line.
+**Instead of [expandable].** This package provides accordion grouping, header
+button semantics and separate collapsed and expanded views.
 
 [expandable]: https://pub.dev/packages/expandable
-[#8]: https://github.com/aryzhov/flutter-expandable/issues/8
-[#50]: https://github.com/aryzhov/flutter-expandable/issues/50
-[#72]: https://github.com/aryzhov/flutter-expandable/issues/72
-[#114]: https://github.com/aryzhov/flutter-expandable/issues/114
 
 ## Reach for it when
 
@@ -95,33 +85,56 @@ ExpandablePanel(
 
 ### An accordion group
 
-Pass one `ExpandableGroupController` to several panels. When one opens, the
-others close. Panels that are not in a group are unaffected.
+Create one `ExpandableController` per panel and give each the same
+`ExpandableGroupController`. When one opens, the others close. Panels that are
+not in a group are unaffected.
+
+Keep the controllers in your `State` and a rebuild reuses them. `FaqList` is
+your widget.
 
 ```dart
-final group = ExpandableGroupController();
+class _FaqListState extends State<FaqList> {
+  final _group = ExpandableGroupController();
+  late final _controllers = [
+    ExpandableController(group: _group),
+    ExpandableController(group: _group),
+  ];
 
-Column(
-  children: [
-    ExpandablePanel(
-      controller: ExpandableController(group: group),
-      header: const Text('Section 1'),
-      collapsed: const Text('Summary 1'),
-      expanded: const Text('Body 1'),
-    ),
-    ExpandablePanel(
-      controller: ExpandableController(group: group),
-      header: const Text('Section 2'),
-      collapsed: const Text('Summary 2'),
-      expanded: const Text('Body 2'),
-    ),
-  ],
-)
+  @override
+  void dispose() {
+    for (final controller in _controllers) {
+      controller.dispose();
+    }
+    _group.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ExpandablePanel(
+          controller: _controllers[0],
+          header: const Text('Section 1'),
+          collapsed: const Text('Summary 1'),
+          expanded: const Text('Body 1'),
+        ),
+        ExpandablePanel(
+          controller: _controllers[1],
+          header: const Text('Section 2'),
+          collapsed: const Text('Summary 2'),
+          expanded: const Text('Body 2'),
+        ),
+      ],
+    );
+  }
+}
 ```
 
 Pass `ExpandableGroupController(allowAllCollapsed: false)` to keep one section
-open at all times. Dispose the group when you are done with it, for example in
-your `State.dispose`.
+open at all times. A controller you create is yours to dispose, and the group
+holds listeners on its members. Dispose each controller, then the group, as
+above.
 
 ### Header padding
 
@@ -207,8 +220,7 @@ Payment, button, collapsed
 Returns, button, collapsed
 ```
 
-The same three titles built as a bare `InkWell`, which is what `expandable`
-hands a screen reader (`Semantics` appears nowhere in its source):
+The same three titles built as a bare `InkWell` with no `Semantics` around it:
 
 ```
 Shipping  tappable, no button role, no open state
@@ -232,8 +244,8 @@ screen reader focused on the header hears the new state.
 * Remove the padding around the header: [#72](https://github.com/aryzhov/flutter-expandable/issues/72)
 * `tapBodyToExpand` and `tapBodyToCollapse` not working: [#50](https://github.com/aryzhov/flutter-expandable/issues/50)
 * Example not compiling: [#114](https://github.com/aryzhov/flutter-expandable/issues/114)
-* No screen-reader support: the header exposed no button role and no
-  expanded state, leaving the control unusable with assistive technology
+* Screen-reader support: the header exposes a button role and an expanded
+  state
 
 ## Credits
 
