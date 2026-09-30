@@ -3,6 +3,9 @@
 - The accordion sample in the README keeps one controller per panel in `State`
   and disposes each of them before the group. Copying it no longer leaves stale
   members in the group after a rebuild.
+- The README's comparison is now a table of when to use this package and when
+  `ExpansionTile` or `ExpansionPanelList.radio` fits better, with the Flutter
+  source lines it was checked against.
 - The README no longer makes claims about the source and open issues of
   `expandable`. It says what this package provides.
 

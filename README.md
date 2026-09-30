@@ -34,18 +34,19 @@ button semantics and separate collapsed and expanded views.
 
 [expandable]: https://pub.dev/packages/expandable
 
-## Reach for it when
+## When to use it
 
-- The collapsed and expanded states show different content, not the same
-  content clipped.
-- A set of panels should behave as an accordion with one open at a time.
-- Panels need a correct button role and expanded state announced to a screen
-  reader.
+Checked against the Flutter 3.41.2 source. Line numbers below are from that
+version.
 
-Skip it if a Material `ExpansionTile` already fits your design. It ships with
-the framework, it announces its own state changes through a live region
-(`material/expansion_tile.dart:634`), and one fewer dependency is worth more
-than the extras here.
+| You need | Use | Why |
+|---|---|---|
+| A shut row that says something different from the open body | `expandable_plus` | `expanded` and `collapsed` are two widgets that cross-fade. `ExpansionTile` has one `children` list and no collapsed view. |
+| A group where one panel is open at a time and each shut panel has its own view | `expandable_plus` | `ExpandableGroupController` closes the others, and `allowAllCollapsed: false` keeps one open. |
+| One body, the Material look, and no extra dependency | `ExpansionTile` | It ships with the framework and already styles the header, the icon and the shut state. |
+| One open at a time in Material's panel list | `ExpansionPanelList.radio` | It is in the SDK (`material/expansion_panel.dart:213`). Each panel takes a `headerBuilder` and one `body`. |
+| A long list of heavy bodies | Either | `ExpansionTile` drops collapsed children by default (`maintainState` is `false`, `material/expansion_tile.dart:131`). Here you set `lazy: true`, see below. |
+| State changes spoken without extra work | `ExpansionTile` | It announces them itself, through a live region on Android and a semantics announcement elsewhere (`material/expansion_tile.dart:540-557` and `:638`). Here the header carries a button role and an expanded flag. There is no live region or announcement. A screen reader hears the new state when it is focused on the header. |
 
 ## Migration from expandable
 
@@ -153,7 +154,8 @@ ExpandablePanel(
 ## Long lists: `lazy`
 
 A cross-fade keeps both children in the tree, and a collapsed panel still builds
-its expanded body. One panel never notices. Twenty do: put twenty collapsed
+its expanded body. `ExpansionTile` drops collapsed children by default, as the
+table above says. One panel never notices. Twenty do: put twenty collapsed
 `ExpandablePanel`s in a `ListView` and fifteen expanded bodies are built on the
 first frame, one for every panel the viewport lays out. Measured in
 `test/lazy_test.dart`, which pins the number. Redraw the figure with
