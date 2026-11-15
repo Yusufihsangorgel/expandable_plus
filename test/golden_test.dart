@@ -2,6 +2,7 @@
 library;
 
 import 'package:expandable_plus/expandable_plus.dart';
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
