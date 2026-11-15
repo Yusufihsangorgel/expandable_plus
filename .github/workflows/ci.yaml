@@ -39,10 +39,11 @@ jobs:
           flutter-version: 3.35.7
       - run: flutter pub get
       # test/semantics_test.dart uses isSemantics, which flutter_test only has
-      # from 3.41.0, so it is left out here. It runs in the job above.
+      # from 3.41.0, so it is left out here. It runs in the job above. Every
+      # other Dart file, the example included, is analyzed as in that job.
       - run: |
-          mapfile -t files < <(git ls-files 'test/*.dart' | grep -v '^test/semantics_test.dart$')
-          flutter analyze --fatal-infos lib "${files[@]}"
+          mapfile -t files < <(git -c core.quotePath=false ls-files '*.dart' | grep -v '^test/semantics_test.dart$')
+          flutter analyze --fatal-infos "${files[@]}"
       - run: |
-          mapfile -t files < <(git ls-files 'test/*_test.dart' | grep -v '^test/semantics_test.dart$')
+          mapfile -t files < <(git -c core.quotePath=false ls-files 'test/*_test.dart' | grep -v '^test/semantics_test.dart$')
           flutter test --exclude-tags golden "${files[@]}"
