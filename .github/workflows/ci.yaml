@@ -38,11 +38,13 @@ jobs:
           channel: stable
           flutter-version: 3.35.7
       - run: flutter pub get
-      # test/semantics_test.dart uses isSemantics, which flutter_test only has
-      # from 3.41.0, so it is left out here. It runs in the job above. Every
-      # other Dart file, the example included, is analyzed as in that job.
+      # test/semantics_test.dart and example/test/screen_reader_transcript_test.dart
+      # use isSemantics, which flutter_test only has from 3.41.0, so both are
+      # left out here; the job above analyzes both and runs the first. Every
+      # other Dart file, the rest of the example included, is analyzed as in
+      # that job. Like that job, this one runs only the tests under test/.
       - run: |
-          mapfile -t files < <(git -c core.quotePath=false ls-files '*.dart' | grep -v '^test/semantics_test.dart$')
+          mapfile -t files < <(git -c core.quotePath=false ls-files '*.dart' | grep -v -e '^test/semantics_test.dart$' -e '^example/test/screen_reader_transcript_test.dart$')
           flutter analyze --fatal-infos "${files[@]}"
       - run: |
           mapfile -t files < <(git -c core.quotePath=false ls-files 'test/*_test.dart' | grep -v '^test/semantics_test.dart$')
