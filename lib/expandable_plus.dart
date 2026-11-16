@@ -1,9 +1,10 @@
 /// Expandable and collapsible panels for Flutter.
 ///
-/// `expandable_plus` is a maintained, drop-in continuation of the `expandable`
-/// package. It keeps the original public API, so existing code keeps working
-/// after you change the import, and it adds a few things the original was
-/// missing:
+/// `expandable_plus` is a maintained continuation of the `expandable`
+/// package. It keeps the original type names, constructor parameters and
+/// default values. Most code compiles after you change the import. A few
+/// behaviours differ, and the README's migration section lists them. It also
+/// adds a few things the original was missing:
 ///
 ///  * Accordion groups, so sibling panels can be made mutually exclusive. See
 ///    [ExpandableGroupController].

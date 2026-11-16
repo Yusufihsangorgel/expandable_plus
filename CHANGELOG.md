@@ -1,5 +1,8 @@
 ## 1.2.6
 
+- The pubspec description and the library dartdoc no longer call the package
+  a drop-in successor. They say it keeps the type names and point to the
+  README's migration section for the behaviour differences.
 - The accordion sample in the README keeps one controller per panel in `State`
   and disposes each of them before the group. Copying it no longer leaves stale
   members in the group after a rebuild.
