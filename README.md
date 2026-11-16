@@ -52,7 +52,9 @@ version.
 
 ## Migration from expandable
 
-Change the import, and your existing panels behave the same.
+Change the import. Every class, constructor parameter and default value of
+expandable 5.0.1 is still here, and every parameter this package adds is
+optional.
 
 ```dart
 // before
@@ -61,8 +63,30 @@ import 'package:expandable/expandable.dart';
 import 'package:expandable_plus/expandable_plus.dart';
 ```
 
-The class names, fields, and defaults are the same. Your existing panels look
-and behave the way they did.
+These differ from expandable 5.0.1:
+
+* Tapping the body of a panel that has no `ExpandableNotifier` of your own
+  above it opens it when `tapBodyToExpand` is set and closes it when
+  `tapBodyToCollapse` is set. In expandable those taps did nothing.
+* `ScrollOnExpand(scrollOnExpand: false)` does not scroll its child into view
+  when the panel opens. In expandable it scrolled anyway.
+* `ExpandableButton` tells a screen reader that it is a button and whether the
+  panel is open.
+* `ExpandableController.of(context, required: true)` throws a `FlutterError`
+  when no `ExpandableNotifier` is above it, in release builds too. In
+  expandable a release build returned null instead.
+* `ExpandableNotifier` disposes the controller it created for itself once it
+  is removed or handed a controller. In expandable that controller outlived
+  the notifier.
+* `ExpandableThemeData` equality counts `iconSize` and `iconPadding`. A theme
+  that sets only those is kept when themes are merged, and changing them in an
+  enclosing `ExpandableTheme` updates the panels below. In expandable such a
+  theme was dropped and such a change did not update them.
+* `Expandable` is a `StatefulWidget` now. A subclass that overrides `build`
+  has to move that code into a `State`.
+
+The package declares `sdk: ^3.9.0` and needs a Flutter release that ships
+Dart 3.9 or a later Dart 3.
 
 ## Install
 

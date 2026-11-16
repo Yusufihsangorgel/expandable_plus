@@ -8,6 +8,11 @@
   source lines it was checked against.
 - The README no longer makes claims about the source and open issues of
   `expandable`. It says what this package provides.
+- The migration section said existing panels behave the same after the import
+  change. It now lists the behaviours that differ, along with the Dart 3.9
+  floor. Two of them had no changelog entry until now: `ScrollOnExpand`
+  respects `scrollOnExpand: false` when a panel opens, and theme equality
+  counts `iconSize` and `iconPadding`.
 
 ## 1.2.5
 
