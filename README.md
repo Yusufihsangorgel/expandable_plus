@@ -65,23 +65,28 @@ import 'package:expandable_plus/expandable_plus.dart';
 
 These differ from expandable 5.0.1:
 
-* Tapping the body of a panel that has no `ExpandableNotifier` of your own
-  above it opens it when `tapBodyToExpand` is set and closes it when
-  `tapBodyToCollapse` is set. In expandable those taps did nothing.
+* Tapping the body of a panel opens it when `tapBodyToExpand` is set and
+  closes it when `tapBodyToCollapse` is set. In expandable that tap did
+  nothing unless an `ExpandableNotifier` of your own was above the panel, and
+  then it toggled that notifier's controller, even when the panel had a
+  `controller` of its own.
 * `ScrollOnExpand(scrollOnExpand: false)` does not scroll its child into view
   when the panel opens. In expandable it scrolled anyway.
 * `ExpandableButton` tells a screen reader that it is a button and whether the
   panel is open.
 * `ExpandableController.of(context, required: true)` throws a `FlutterError`
-  when no `ExpandableNotifier` is above it, in release builds too. In
-  expandable a release build returned null instead.
+  when no `ExpandableNotifier` is above it, in every build mode. `Expandable`
+  without a `controller`, `ExpandableButton`, `ExpandableIcon` and
+  `ScrollOnExpand` make that call. In expandable a debug build threw an
+  `AssertionError` there and a release build returned null.
 * `ExpandableNotifier` disposes the controller it created for itself once it
   is removed or handed a controller. In expandable that controller outlived
   the notifier.
 * `ExpandableThemeData` equality counts `iconSize` and `iconPadding`. A theme
-  that sets only those is kept when themes are merged, and changing them in an
-  enclosing `ExpandableTheme` updates the panels below. In expandable such a
-  theme was dropped and such a change did not update them.
+  that sets only those is kept when themes are merged, and changing only those
+  in an enclosing `ExpandableTheme` rebuilds the panels below. In expandable
+  such a theme was dropped, and such a change reached the panels only when
+  something else rebuilt them.
 * `Expandable` is a `StatefulWidget` now. A subclass that overrides `build`
   has to move that code into a `State`.
 
